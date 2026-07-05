@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TISPCMUN Club — Model United Nations</title>
+<meta name="description" content="TISPCMUN Club — hall of fame, past conferences, achievements, and executive board." />
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --ink: #10192b;
+  --ink-2: #18243c;
+  --ink-3: #23334f;
+  --parchment: #f1ece0;
+  --parchment-2: #e7dfcd;
+  --parchment-3: #ddd3ba;
+  --accent: #2f5d8a;
+  --accent-light: #7fa8d9;
+  --accent-dim: #1f3f5c;
+  --slate: #4a4f5c;
+  --slate-soft: #6b7180;
+  --white: #ffffff;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max-width: 1200px;
+  --nav-height: 80px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--parchment);
+  color: var(--slate);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+h1, h2, h3, h4 { font-family: var(--font-display); color: var(--ink); font-weight: 600; line-height: 1.15; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; }
+section { position: relative; }
+::selection { background: var(--accent-light); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- Page router ---------- */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ---------- Utility ---------- */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-dim);
+}
+.eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); display: inline-block; }
+
+.section-head { max-width: 640px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); margin-top: 14px; }
+.section-head p { margin-top: 16px; color: var(--slate-soft); font-size: 1.02rem; max-width: 560px; }
+.section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+.section-head.center .eyebrow { justify-content: center; }
+.section-head.center p { margin-left: auto; margin-right: auto; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; padding: 14px 30px;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em;
+  border-radius: 2px; border: 1px solid transparent; cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.btn-primary { background: var(--accent-light); color: var(--ink); }
+.btn-primary:hover { background: #9dc0e6; transform: translateY(-2px); }
+.btn-ghost { border-color: rgba(241, 236, 224, 0.4); color: var(--parchment); }
+.btn-ghost:hover { border-color: var(--accent-light); color: var(--accent-light); transform: translateY(-2px); }
+.btn-outline-dark { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn-outline-dark:hover { background: var(--ink); color: var(--parchment); }
+
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ---------- Navbar ---------- */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: var(--nav-height);
+  display: flex; align-items: center; background: rgba(16, 25, 43, 0.92);
+  backdrop-filter: blur(10px); border-bottom: 1px solid rgba(47, 93, 138, 0.28);
+}
+.site-nav .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.brand { display: flex; align-items: center; gap: 12px; color: var(--parchment); cursor: pointer; }
+.brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+.brand-word { font-family: var(--font-display); font-size: 1.18rem; letter-spacing: 0.02em; font-weight: 600; }
+.brand-word span { color: var(--accent-light); font-style: italic; font-weight: 500; }
+
+.nav-links { display: flex; align-items: center; gap: 38px; }
+.nav-links a {
+  position: relative; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(241, 236, 224, 0.75); padding: 8px 0;
+  transition: color 0.25s ease; cursor: pointer;
+}
+.nav-links a:hover { color: var(--parchment); }
+.nav-links a.active { color: var(--accent-light); }
+.nav-links a.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--accent-light); }
+
+.nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { width: 24px; height: 2px; background: var(--parchment); transition: transform 0.3s ease, opacity 0.3s ease; }
+
+@media (max-width: 880px) {
+  .nav-toggle { display: flex; }
+  .nav-links {
+    position: fixed; top: var(--nav-height); left: 0; right: 0; background: var(--ink);
+    flex-direction: column; align-items: flex-start; padding: 28px 32px 36px; gap: 22px;
+    transform: translateY(-12px); opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease; border-bottom: 1px solid rgba(47,93,138,0.28);
+  }
+  .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  background: radial-gradient(ellipse at 20% -10%, #1c2f4d 0%, var(--ink) 55%), var(--ink);
+  color: var(--parchment); padding-top: var(--nav-height); overflow: hidden; position: relative;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(127,168,217,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(127,168,217,0.06) 1px, transparent 1px);
+  background-size: 64px 64px; mask-image: radial-gradient(ellipse at 30% 30%, black, transparent 70%); pointer-events: none;
+}
+.hero .container { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 60px; align-items: center; padding-top: 60px; padding-bottom: 60px; }
+.hero-eyebrow { color: var(--accent-light); }
+.hero h1 { font-size: clamp(2.6rem, 5.2vw, 4.4rem); color: var(--parchment); margin-top: 18px; letter-spacing: -0.01em; }
+.hero h1 em { color: var(--accent-light); font-style: italic; font-weight: 500; }
+.hero p.lead { margin-top: 22px; font-size: 1.08rem; color: rgba(241,236,224,0.72); max-width: 480px; }
+.hero-actions { display: flex; gap: 16px; margin-top: 36px; flex-wrap: wrap; }
+.hero-seal { display: flex; justify-content: center; align-items: center; }
+.hero-seal svg { width: min(360px, 100%); height: auto; }
+
+.hero-stats { margin-top: 64px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(127,168,217,0.3); padding-top: 28px; }
+.hero-stats .stat + .stat { border-left: 1px solid rgba(127,168,217,0.22); }
+.stat { text-align: left; padding-left: 20px; }
+.stat:first-child { padding-left: 0; }
+.stat .num { font-family: var(--font-display); font-size: clamp(1.6rem, 2.6vw, 2.3rem); color: var(--accent-light); font-weight: 600; }
+.stat .label { margin-top: 4px; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(241,236,224,0.6); }
+
+@media (max-width: 900px) {
+  .hero .container { grid-template-columns: 1fr; text-align: left; }
+  .hero-seal { order: -1; margin-bottom: 12px; }
+  .hero-seal svg { width: 180px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); row-gap: 24px; }
+  .hero-stats .stat:nth-child(3) { padding-left: 0; }
+  .hero-stats .stat + .stat:nth-child(even) { border-left: 1px solid rgba(127,168,217,0.22); }
+  .hero-stats .stat:nth-child(odd) { border-left: none; }
+}
+
+/* ---------- Page header (interior pages) ---------- */
+.page-header { background: var(--ink); color: var(--parchment); padding: calc(var(--nav-height) + 76px) 0 76px; position: relative; }
+.page-header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(127,168,217,0.55), transparent); }
+.page-header .eyebrow { color: var(--accent-light); }
+.page-header h1 { color: var(--parchment); font-size: clamp(2.2rem, 4.4vw, 3.2rem); margin-top: 16px; max-width: 720px; }
+.page-header p { margin-top: 18px; color: rgba(241,236,224,0.68); max-width: 560px; font-size: 1.02rem; }
+
+/* ---------- Sections ---------- */
+.section { padding: 96px 0; }
+.section.on-dark { background: var(--ink); color: rgba(241,236,224,0.78); }
+.section.on-dark h2 { color: var(--parchment); }
+.section.tint { background: var(--parchment-2); }
+
+/* ---------- Plaque cards (Hall of Fame) ---------- */
+.plaque-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.plaque { background: var(--white); border: 1px solid var(--parchment-3); padding: 32px 28px 28px; position: relative; transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.plaque::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent-dim), var(--accent-light)); }
+.plaque:hover { transform: translateY(-6px); box-shadow: 0 22px 40px -20px rgba(16,25,43,0.35); }
+.plaque-medal { width: 46px; height: 46px; margin-bottom: 20px; }
+.plaque .award { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dim); }
+.plaque h3 { margin-top: 10px; font-size: 1.3rem; }
+.plaque .meta { margin-top: 8px; font-size: 0.88rem; color: var(--slate-soft); }
+.plaque .divider { margin: 18px 0; height: 1px; background: var(--parchment-3); }
+.plaque .quote { font-family: var(--font-display); font-style: italic; color: var(--ink-3); font-size: 0.98rem; line-height: 1.55; }
+
+.year-divider { display: flex; align-items: center; gap: 18px; margin: 64px 0 36px; }
+.year-divider:first-child { margin-top: 0; }
+.year-divider .yr { font-family: var(--font-display); font-size: 1.6rem; color: var(--ink); white-space: nowrap; }
+.year-divider .line { flex: 1; height: 1px; background: var(--parchment-3); }
+
+@media (max-width: 980px) { .plaque-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .plaque-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Docket (Conferences) ---------- */
+.docket { border-top: 1px solid var(--parchment-3); }
+.docket-item { display: grid; grid-template-columns: 96px 1fr auto; gap: 28px; align-items: start; padding: 34px 0; border-bottom: 1px solid var(--parchment-3); }
+.docket-item .clause { font-family: var(--font-display); font-size: 1rem; color: var(--accent-dim); font-weight: 600; padding-top: 4px; }
+.docket-item h3 { font-size: 1.35rem; }
+.docket-item .place { margin-top: 6px; font-size: 0.92rem; color: var(--slate-soft); }
+.docket-item .tags { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+.tag { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 11px; border: 1px solid var(--parchment-3); color: var(--slate); border-radius: 2px; }
+.tag.gold { border-color: var(--accent); color: var(--accent-dim); background: rgba(47,93,138,0.08); }
+.docket-item .result { text-align: right; white-space: nowrap; font-family: var(--font-display); }
+.docket-item .result .n { font-size: 1.6rem; color: var(--ink); display: block; }
+.docket-item .result .l { font-family: var(--font-body); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-soft); }
+
+@media (max-width: 720px) {
+  .docket-item { grid-template-columns: 56px 1fr; }
+  .docket-item .result { grid-column: 1 / -1; text-align: left; display: flex; gap: 8px; align-items: baseline; margin-top: 8px; }
+}
+
+/* ---------- Achievements: timeline + award tiles ---------- */
+.timeline { position: relative; padding-left: 42px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 1px; background: var(--parchment-3); }
+.timeline-item { position: relative; padding-bottom: 46px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before { content: ''; position: absolute; left: -42px; top: 4px; width: 15px; height: 15px; border-radius: 50%; background: var(--parchment); border: 2px solid var(--accent); }
+.timeline-item .yr { font-family: var(--font-display); color: var(--accent-dim); font-weight: 600; }
+.timeline-item h3 { margin-top: 6px; font-size: 1.25rem; }
+.timeline-item p { margin-top: 8px; color: var(--slate-soft); max-width: 620px; }
+
+.award-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.award-tile { background: var(--ink); color: var(--parchment); padding: 30px 24px; text-align: center; border: 1px solid rgba(127,168,217,0.3); }
+.award-tile .num { font-family: var(--font-display); font-size: 2.1rem; color: var(--accent-light); }
+.award-tile .lbl { margin-top: 8px; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(241,236,224,0.65); }
+
+@media (max-width: 900px) { .award-tiles { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---------- Nameplates (Executive Team) ---------- */
+.nameplate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.nameplate { background: var(--white); border: 1px solid var(--parchment-3); overflow: hidden; transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.nameplate:hover { transform: translateY(-6px); box-shadow: 0 22px 40px -20px rgba(16,25,43,0.3); }
+.nameplate-top { background: var(--ink); padding: 30px 26px 46px; position: relative; }
+.nameplate-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-light), var(--accent-dim)); color: var(--white); font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
+.nameplate-tab { position: absolute; bottom: -1px; left: 26px; right: 26px; height: 26px; background: var(--white); clip-path: polygon(6% 100%, 0 0, 100% 0, 94% 100%); }
+.nameplate-body { padding: 30px 26px 28px; }
+.nameplate-body .role { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dim); }
+.nameplate-body h3 { margin-top: 8px; font-size: 1.28rem; }
+.nameplate-body .bio { margin-top: 12px; font-size: 0.93rem; color: var(--slate-soft); }
+.nameplate-body .committee { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--parchment-3); font-size: 0.8rem; color: var(--slate); }
+.nameplate-body .committee b { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 980px) { .nameplate-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .nameplate-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Interactive Crisis Game Game Styling ---------- */
+.game-card { background: var(--white); border: 1px solid var(--parchment-3); padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; max-width: 800px; margin: 0 auto; }
+.game-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent); }
+.game-options { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+.game-opt-btn { background: var(--parchment); border: 1px solid var(--parchment-3); text-align: left; padding: 16px 20px; font-family: var(--font-body); font-size: 0.95rem; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: all 0.2s ease; }
+.game-opt-btn:hover { background: var(--white); border-color: var(--accent); transform: translateX(4px); }
+.game-feedback { margin-top: 24px; padding: 20px; background: rgba(47, 93, 138, 0.08); border-left: 3px solid var(--accent); display: none; }
+.game-feedback p { font-size: 0.95rem; color: var(--ink-2); margin-bottom: 14px; }
+
+/* ---------- CTA band ---------- */
+.cta-band { background: var(--ink); color: var(--parchment); padding: 80px 0; text-align: center; position: relative; }
+.cta-band h2 { color: var(--parchment); font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
+.cta-band p { margin: 18px auto 30px; max-width: 480px; color: rgba(241,236,224,0.68); }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ---------- Footer ---------- */
+.site-footer { background: #0b1220; color: rgba(241,236,224,0.55); padding: 56px 0 28px; }
+.footer-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; padding-bottom: 36px; border-bottom: 1px solid rgba(47,93,138,0.22); }
+.footer-brand { display: flex; align-items: center; gap: 12px; color: var(--parchment); }
+.footer-brand svg { width: 30px; height: 30px; }
+.footer-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+.footer-col h4 { color: var(--parchment); font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+.footer-col a, .footer-col p { display: block; font-size: 0.88rem; padding: 5px 0; color: rgba(241,236,224,0.55); transition: color 0.2s ease; }
+.footer-col a:hover { color: var(--accent-light); }
+.footer-bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; }
+
+@media (max-width: 640px) { .footer-top, .footer-bottom { flex-direction: column; } }
+
+/* ---------- Misc ---------- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+@media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
+.pull-quote { font-family: var(--font-display); font-style: italic; font-size: 1.5rem; color: var(--ink); line-height: 1.5; border-left: 2px solid var(--accent); padding-left: 26px; }
+.pull-quote cite { display: block; margin-top: 16px; font-family: var(--font-body); font-style: normal; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-soft); }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="container">
+    <a class="brand" data-nav="home">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="28" stroke="#2F5D8A" stroke-width="1.4"/>
+        <circle cx="30" cy="30" r="22" stroke="#2F5D8A" stroke-width="0.7" opacity="0.6"/>
+        <text x="30" y="36" text-anchor="middle" font-family="Fraunces, serif" font-size="14" fill="#7FA8D9" font-weight="600">TM</text>
+      </svg>
+      <span class="brand-word">TISPCMUN <span>Club</span></span>
+    </a>
+    <nav class="nav-links">
+      <a data-nav="home" class="active">Home</a>
+      <a data-nav="hall-of-fame">Hall of Fame</a>
+      <a data-nav="conferences">Conferences</a>
+      <a data-nav="achievements">Achievements</a>
+      <a data-nav="team">Executive Board</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="app">
+
+<section class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-copy">
+        <span class="eyebrow hero-eyebrow">Est. 2012 · High School League</span>
+        <h1>Diplomacy is practiced,<br><em>not inherited.</em></h1>
+        <p class="lead">TISPCMUN Club trains elite delegates to negotiate, draft, and resolve historic global issues. Years of rigorous debate, strict resolutions, and hard-earned gavels.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" data-nav="team">Meet the Board</a>
+          <a class="btn btn-ghost" data-nav="conferences">View Our Delegations</a>
+        </div>
+      </div>
+      <div class="hero-seal">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs><path id="ringPath" d="M 150,150 m -120,0 a 120,120 0 1,1 240,0 a 120,120 0 1,1 -240,0" /></defs>
+          <circle cx="150" cy="150" r="145" fill="none" stroke="#2F5D8A" stroke-width="1" opacity="0.35"/>
+          <circle cx="150" cy="150" r="120" fill="none" stroke="#2F5D8A" stroke-width="1.2"/>
+          <circle cx="150" cy="150" r="94" fill="none" stroke="#2F5D8A" stroke-width="0.6" opacity="0.5"/>
+          <text font-family="Inter, sans-serif" font-size="10.5" letter-spacing="4" fill="#7FA8D9">
+            <textPath href="#ringPath" startOffset="2%">TISPCMUN CLUB · EXCELLENCE IN DIPLOMACY ·</textPath>
+          </text>
+          <g stroke="#2F5D8A" stroke-width="0.7" opacity="0.55" fill="none">
+            <ellipse cx="150" cy="150" rx="94" ry="40"/>
+            <ellipse cx="150" cy="150" rx="94" ry="68"/>
+            <line x1="56" y1="150" x2="244" y2="150"/>
+          </g>
+          <g fill="none" stroke="#2F5D8A" stroke-width="1.4">
+            <path d="M110 205 C90 185, 84 150, 100 110" opacity="0.85"/>
+            <path d="M190 205 C210 185, 216 150, 200 110" opacity="0.85"/>
+          </g>
+          <g fill="#7FA8D9" opacity="0.9">
+            <ellipse cx="98" cy="120" rx="6" ry="10" transform="rotate(-30 98 120)"/>
+            <ellipse cx="91" cy="145" rx="6" ry="10" transform="rotate(-12 91 145)"/>
+            <ellipse cx="90" cy="172" rx="6" ry="10" transform="rotate(8 90 172)"/>
+            <ellipse cx="99" cy="196" rx="6" ry="10" transform="rotate(28 99 196)"/>
+            <ellipse cx="202" cy="120" rx="6" ry="10" transform="rotate(30 202 120)"/>
+            <ellipse cx="209" cy="145" rx="6" ry="10" transform="rotate(12 209 145)"/>
+            <ellipse cx="210" cy="172" rx="6" ry="10" transform="rotate(-8 210 172)"/>
+            <ellipse cx="201" cy="196" rx="6" ry="10" transform="rotate(-28 201 196)"/>
+          </g>
+          <g transform="translate(150 150) rotate(-40)" stroke="#F1ECE0" stroke-width="4" stroke-linecap="round">
+            <line x1="-34" y1="0" x2="14" y2="0"/>
+            <line x1="-8" y1="-16" x2="-8" y2="16"/>
+          </g>
+          <text x="150" y="185" text-anchor="middle" font-family="Fraunces, serif" font-size="15" fill="#F1ECE0" font-weight="500">EST. MMXII</text>
+        </svg>
+      </div>
+      <div class="hero-stats" style="grid-column: 1 / -1;">
+        <div class="stat"><div class="num" data-count="14">0</div><div class="label">Years Active</div></div>
+        <div class="stat"><div class="num" data-count="52">0</div><div class="label">Conferences Attended</div></div>
+        <div class="stat"><div class="num" data-count="89">0</div><div class="label">Gavels &amp; Awards</div></div>
+        <div class="stat"><div class="num" data-count="210" data-suffix="+">0</div><div class="label">Delegates Trained</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col reveal">
+      <div>
+        <span class="eyebrow">Our Charter</span>
+        <h2 style="margin-top:14px; font-size: clamp(1.8rem, 3vw, 2.3rem);">A committee room is a rehearsal for the world.</h2>
+        <p style="margin-top:18px; color: var(--slate-soft); max-width: 480px;">Every delegate who walks through our door learns to research foreign policies, write rapid-fire resolutions under high-intensity crisis blocks, and find consensus where none exists.</p>
+        <div style="margin-top:28px;"><a class="btn btn-outline-dark" data-nav="achievements">Our Achievements</a></div>
+      </div>
+      <blockquote class="pull-quote">
+        TISPCMUN doesn't just send delegates to conferences — they send teams that pivot the course of the debate.
+        <cite>— Club Advisor, Department of Social Sciences</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="container">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Interactive Simulator</span>
+        <h2>The Crisis Simulation Room</h2>
+        <p>Step onto the floor of the Security Council. A localized diplomatic emergency has broken out. Choose your actions carefully to maintain global peace without breaking protocol.</p>
+      </div>
+      
+      <div class="game-card reveal" id="crisis-game">
+        <h3 id="game-stage-title" style="font-size: 1.5rem; margin-bottom: 12px;">Scenario 1: The Border Flashpoint</h3>
+        <p id="game-stage-desc" style="font-size: 1.05rem; margin-bottom: 24px;">An unrecognized intelligence drone has crashed inside a heavily demilitarized buffer zone. Two opposing nations are deploying defensive line units forward. You hold the floor as the Head Delegate.</p>
+        
+        <div class="game-options" id="game-choices">
+          </div>
+
+        <div class="game-feedback" id="game-feedback-box">
+          <p id="game-feedback-text"></p>
+          <button class="btn btn-primary" id="game-next-btn">Proceed to Next Phase</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">The Docket</span>
+        <h2>Where we've sat at the table.</h2>
+        <p style="color: rgba(241,236,224,0.65);">A partial record of recent regional and international assemblies successfully contested by TISPCMUN.</p>
+      </div>
+      <div class="docket" style="border-top-color: rgba(127,168,217,0.25);">
+        <div class="docket-item" style="border-bottom-color: rgba(127,168,217,0.18);">
+          <div class="clause" style="color:#7FA8D9;">I.</div>
+          <div>
+            <h3 style="color:#F1ECE0;">THIMUN Qatar 2026</h3>
+            <div class="place" style="color:rgba(241,236,224,0.55);">Doha, Qatar · Jan 2026</div>
+            <div class="tags"><span class="tag gold">2 Best Delegate</span><span class="tag" style="border-color:rgba(241,236,224,0.25); color:rgba(241,236,224,0.7);">12 Delegates Sent</span></div>
+          </div>
+          <div class="result"><span class="n" style="color:#F1ECE0;">3</span><span class="l" style="color:rgba(241,236,224,0.5);">Gavels</span></div>
+        </div>
+        <div class="docket-item" style="border-bottom-color: rgba(127,168,217,0.18);">
+          <div class="clause" style="color:#7FA8D9;">II.</div>
+          <div>
+            <h3 style="color:#F1ECE0;">Harvard MUN 2025</h3>
+            <div class="place" style="color:rgba(241,236,224,0.55);">Boston, USA · Feb 2025</div>
+            <div class="tags"><span class="tag gold">Best Small Delegation</span></div>
+          </div>
+          <div class="result"><span class="n" style="color:#F1ECE0;">5</span><span class="l" style="color:rgba(241,236,224,0.5);">Gavels</span></div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:44px;"><a class="btn btn-ghost" data-nav="conferences">See the Full Docket</a></div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container reveal">
+      <span class="eyebrow" style="justify-content:center;">Join the Floor</span>
+      <h2 style="margin-top:14px;">Delegations open every autumn.</h2>
+      <p>No prior competitive debate background required — only a drive to research global frameworks and present positions clearly.</p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" data-nav="team">Contact the Board</a>
+        <a class="btn btn-ghost" data-nav="hall-of-fame">See What's Possible</a>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<section class="page" id="page-hall-of-fame">
+  <section class="page-header">
+    <div class="container">
+      <span class="eyebrow">Hall of Fame</span>
+      <h1>Every gavel has a name behind it.</h1>
+      <p>Best Delegate, Outstanding Delegate, and Honorable Mentions — recognizing individual triumphs brought back to TISPCMUN.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="year-divider reveal"><span class="yr">2025 - 2026</span><span class="line"></span></div>
+      <div class="plaque-grid">
+        <div class="plaque reveal">
+          <svg class="plaque-medal" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="12" fill="none" stroke="#2F5D8A" stroke-width="2"/><path d="M17 28 L13 44 L24 38 L35 44 L31 28" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linejoin="round"/><circle cx="24" cy="18" r="5" fill="#7FA8D9"/></svg>
+          <div class="award">Best Delegate</div>
+          <h3>Amara Okafor</h3>
+          <div class="meta">UN Security Council · THIMUN 2026</div>
+          <div class="divider"></div>
+          <p class="quote">"Managed the entire crisis block smoothly — singlehandedly passing two complex structural amendments."</p>
+        </div>
+
+        <div class="plaque reveal">
+          <svg class="plaque-medal" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="12" fill="none" stroke="#2F5D8A" stroke-width="2"/><path d="M17 28 L13 44 L24 38 L35 44 L31 28" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linejoin="round"/><circle cx="24" cy="18" r="5" fill="#7FA8D9"/></svg>
+          <div class="award">Outstanding Delegate</div>
+          <h3>Priya Nair</h3>
+          <div class="meta">UN Human Rights Council · HarvardMUN 2025</div>
+          <div class="divider"></div>
+          <p class="quote">"Introduced a highly polished working group document that survived fierce unmoderated caucuses intact."</p>
+        </div>
+
+        <div class="plaque reveal">
+          <svg class="plaque-medal" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="12" fill="none" stroke="#2F5D8A" stroke-width="2"/><path d="M17 28 L13 44 L24 38 L35 44 L31 28" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linejoin="round"/><circle cx="24" cy="18" r="5" fill="#7FA8D9"/></svg>
+          <div class="award">Honorable Mention</div>
+          <h3>Jonah Weiss</h3>
+          <div class="meta">Historical Cabinet · Yale MUN 2025</div>
+          <div class="divider"></div>
+          <p class="quote">"Held a strategic minority bloc posture against immense block pressures while maintaining diplomatic elegance."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section class="page" id="page-conferences">
+  <section class="page-header">
+    <div class="container">
+      <span class="eyebrow">Conferences</span>
+      <h1>Our Expedition History</h1>
+      <p>Review the full itinerary of domestic forums and international circuits challenged by the club across the years.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="docket">
+        <div class="docket-item">
+          <div class="clause">2026</div>
+          <div>
+            <h3>THIMUN Qatar</h3>
+            <div class="place">Doha · International Arena</div>
+            <p style="margin-top: 8px;">Confronting critical climate refugee policies within the General Assembly.</p>
+          </div>
+          <div class="result"><span class="n">3</span><span class="l">Awards</span></div>
+        </div>
+        <div class="docket-item">
+          <div class="clause">2025</div>
+          <div>
+            <h3>Harvard Model UN</h3>
+            <div class="place">Boston, USA</div>
+            <p style="margin-top: 8px;">Navigating intricate global economic supply chains under historical stressors.</p>
+          </div>
+          <div class="result"><span class="n">5</span><span class="l">Awards</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section class="page" id="page-achievements">
+  <section class="page-header">
+    <div class="container">
+      <span class="eyebrow">Milestones</span>
+      <h1>Decades of Intellectual Distinction</h1>
+      <p>Tracing our evolutionary metrics from a local startup school club into an elite award-winning delegation framework.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="award-tiles" style="margin-bottom: 60px;">
+        <div class="award-tile"><div class="num">14</div><div class="lbl">Years of Rigorous Debates</div></div>
+        <div class="award-tile"><div class="num">89</div><div class="lbl">Total Gavels Brought Home</div></div>
+        <div class="award-tile"><div class="num">100%</div><div class="lbl">Resolution Passing Rate</div></div>
+        <div class="award-tile"><div class="num">Top 5</div><div class="lbl">Regional Rank Placing</div></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="yr">2026</div>
+          <h3>Sweeping International Formats</h3>
+          <p>Achieved unprecedented strategic alignment at multi-bloc international forums, winning institutional accolades for negotiation mastery.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="yr">2023</div>
+          <h3>First Regional 'Best Delegation'</h3>
+          <p>Dominated school circuits completely by passing comprehensive security frameworks across three concurrent crisis chambers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section class="page" id="page-team">
+  <section class="page-header">
+    <div class="container">
+      <span class="eyebrow">The Board</span>
+      <h1>The TISPCMUN Executive Secretariat</h1>
+      <p>Meet the structural leaders directing strategy, drafting technical guides, and molding the next generation of club diplomats.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="nameplate-grid">
+        <div class="nameplate">
+          <div class="nameplate-top">
+            <div class="nameplate-avatar">EO</div>
+            <div class="nameplate-tab"></div>
+          </div>
+          <div class="nameplate-body">
+            <div class="role">Secretary-General</div>
+            <h3>Ethan Ong</h3>
+            <p class="bio">Specializes in historic crisis blocks and international maritime dispute law frameworks.</p>
+            <div class="committee">Oversight: <b>All Committees</b></div>
+          </div>
+        </div>
+        <div class="nameplate">
+          <div class="nameplate-top">
+            <div class="nameplate-avatar">SL</div>
+            <div class="nameplate-tab"></div>
+          </div>
+          <div class="nameplate-body">
+            <div class="role">Director-General</div>
+            <h3>Sarah Lim</h3>
+            <p class="bio">Coordinates training schedules, delegate development pathways, and position paper modules.</p>
+            <div class="committee">Oversight: <b>General Assemblies</b></div>
+          </div>
+        </div>
+        <div class="nameplate">
+          <div class="nameplate-top">
+            <div class="nameplate-avatar">JM</div>
+            <div class="nameplate-tab"></div>
+          </div>
+          <div class="nameplate-body">
+            <div class="role">Under-Secretary-General</div>
+            <h3>Julian Marc</h3>
+            <p class="bio">Manages crisis room creation, research portfolios, and external conference logistical setups.</p>
+            <div class="committee">Oversight: <b>Crisis Simulations</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="30" r="28" stroke="#2F5D8A" stroke-width="1.4"/>
+          <text x="30" y="35" text-anchor="middle" font-family="Fraunces, serif" font-size="12" fill="#7FA8D9" font-weight="600">TM</text>
+        </svg>
+        <span class="brand-word">TISPCMUN <span>Club</span></span>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a data-nav="home">Home</a>
+          <a data-nav="hall-of-fame">Hall of Fame</a>
+          <a data-nav="conferences">Conferences</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <p>Weekly Practice: Thu 4:00 PM</p>
+          <p>Room: Main Lecture Hall</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TISPCMUN Club. All Rights Reserved.</p>
+      <p>Designed for Scholastic Diplomatic Excellence.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  
+  // --- 1. SPA ROUTER SYSTEM ---
+  const navLinks = document.querySelectorAll('[data-nav]');
+  const pages = document.querySelectorAll('.page');
+
+  function navigateTo(targetPageId) {
+    pages.forEach(page => page.classList.remove('active'));
+    
+    const activePage = document.getElementById(`page-${targetPageId}`);
+    if (activePage) {
+      activePage.classList.add('active');
+    }
+
+    // Update active state in nav elements
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      if (link.getAttribute('data-nav') === targetPageId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Reset mobile menu on navigation
+    document.querySelector('.nav-links').classList.remove('open');
+    document.querySelector('.nav-toggle').classList.remove('open');
+
+    // Scroll cleanly to header
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Trigger counters if turning to home
+    if (targetPageId === 'home') {
+      setTimeout(runCounters, 100);
+    }
+    
+    // Trigger structural scroll animations
+    handleScrollReveal();
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('data-nav');
+      navigateTo(target);
+    });
+  });
+
+  // --- 2. MOBILE NAVIGATION DRAWER ---
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-links');
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navMenu.classList.toggle('open');
+    });
+  }
+
+  // --- 3. NUMERICAL HERO STATS COUNTER ANIMATION ---
+  function runCounters() {
+    const counters = document.querySelectorAll('.num');
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-count'), 10);
+      const suffix = counter.getAttribute('data-suffix') || '';
+      if (isNaN(target)) return;
+      
+      let current = 0;
+      const duration = 1200; 
+      const increment = target / (duration / 16);
+
+      const updateCount = () => {
+        current += increment;
+        if (current >= target) {
+          counter.textContent = target + suffix;
+        } else {
+          counter.textContent = Math.floor(current) + suffix;
+          requestAnimationFrame(updateCount);
+        }
+      };
+      updateCount();
+    });
+  }
+  runCounters();
+
+  // --- 4. SCROLL VISIBILITY REVEAL ENGINE ---
+  const revealElements = document.querySelectorAll('.reveal');
+  function handleScrollReveal() {
+    revealElements.forEach(el => {
+      const elementTop = el.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      if (elementTop < windowHeight * 0.88) {
+        el.classList.add('is-visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', handleScrollReveal);
+  handleScrollReveal(); // Run once initially
+
+  // --- 5. INTERACTIVE SIMULATION GAME ENGINE ---
+  const gameData = [
+    {
+      title: "Scenario 1: The Border Flashpoint",
+      desc: "An unrecognized intelligence drone has crashed inside a heavily demilitarized buffer zone. Two opposing nations are deploying defensive line units forward. You hold the floor as the Head Delegate. What is your first action?",
+      choices: [
+        { text: "Motion for an Immediate Moderated Caucus regarding 'Border Demarcation Protection Measures'.", score: 10, feedback: "Excellent protocol selection. This establishes structured debate and cool-headed dialogue under UN rules." },
+        { text: "Release a rapid unilateral press statement condemning the opposing country's defensive moves.", score: 2, feedback: "Unilateral statements without consulting committee blocs escalate panic and reduce your negotiation capital." },
+        { text: "Enter an unmoderated caucus instantly to draft a binding emergency resolution with close allies.", score: 7, feedback: "Strategic, but missing early consensus. Allies help, but you need the broader committee room engaged first." }
+      ]
+    },
+    {
+      title: "Scenario 2: The Working Paper Stand-off",
+      desc: "Your block has successfully drafted a comprehensive treaty modification framework, but a rival coalition threatens a hard veto over Clause 4 (Tech Inspections). How do you salvage your policy?",
+      choices: [
+        { text: "Refuse any amendments. Force a high-stakes floor vote to expose their obstructionism publicly.", score: 4, feedback: "A dead-locked resolution yields no real progress. Real diplomacy requires structured compromise." },
+        { text: "Propose a minor amendment replacing rigid inspection dates with mutually agreed oversight terms.", score: 10, feedback: "Superb diplomatic finesse. You preserved the inspection goal while adjusting terms to bypass the veto threat." },
+        { text: "Withdraw the paper entirely and begin drafting a brand new compromise document from scratch.", score: 5, feedback: "This wastes precious working hours. Modifying existing working assets is far more efficient." }
+      ]
+    },
+    {
+      title: "Scenario 3: The Final Plenary Gavel",
+      desc: "The voting block is commencing in 10 minutes. A swing nation delegate approaches you offering support if you endorse their minor agricultural subsidy proposal in a separate sub-clause. What do you do?",
+      choices: [
+        { text: "Accept immediately and update the co-sponsor ledger list before voting procedures lock.", score: 10, feedback: "Masterful horse-trading. Merging reasonable cross-interests is exactly how winning MUN coalitions pass resolutions." },
+        { text: "Decline. Your draft must remain pure and single-topic focused without external clutter.", score: 6, feedback: "Purity is admirable, but bills fail without numbers. Building wide voting coalitions is key to global consensus." }
+      ]
+    }
+  ];
+
+  let currentGameStage = 0;
+  let totalScore = 0;
+
+  const stageTitle = document.getElementById('game-stage-title');
+  const stageDesc = document.getElementById('game-stage-desc');
+  const choicesContainer = document.getElementById('game-choices');
+  const feedbackBox = document.getElementById('game-feedback-box');
+  const feedbackText = document.getElementById('game-feedback-text');
+  const nextBtn = document.getElementById('game-next-btn');
+
+  function renderGameStage() {
+    feedbackBox.style.display = 'none';
+    choicesContainer.innerHTML = '';
+
+    if (currentGameStage < gameData.length) {
+      const stage = gameData[currentGameStage];
+      stageTitle.textContent = stage.title;
+      stageDesc.textContent = stage.desc;
+
+      stage.choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'game-opt-btn';
+        btn.textContent = choice.text;
+        btn.addEventListener('click', () => handleChoiceSelection(choice));
+        choicesContainer.appendChild(btn);
+      });
+    } else {
+      // Game end state
+      stageTitle.textContent = "Simulation Concluded";
+      let performanceEval = "Outstanding Diplomat. You are fully prepared to lead delegations at international forums.";
+      if (totalScore < 20) performanceEval = "Capable Delegate. With focused training on rules of procedure, your floor leverage will grow.";
+      
+      stageDesc.textContent = `Thank you for processing through the TISPCMUN Crisis Simulator. Total Diplomatic Capability Score: ${totalScore} / 30. ${performanceEval}`;
+      nextBtn.textContent = "Restart Simulator";
+    }
+  }
+
+  function handleChoiceSelection(choice) {
+    totalScore += choice.score;
+    feedbackText.textContent = choice.feedback;
+    feedbackBox.style.display = 'block';
+    choicesContainer.innerHTML = ''; // Lock selections
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (currentGameStage < gameData.length) {
+      currentGameStage++;
+    } else {
+      currentGameStage = 0;
+      totalScore = 0;
+      nextBtn.textContent = "Proceed to Next Phase";
+    }
+    renderGameStage();
+  });
+
+  // Run game initial rendering pass
+  renderGameStage();
+});
+</script>
+</body>
+</html>
