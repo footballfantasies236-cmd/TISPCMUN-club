@@ -250,7 +250,7 @@ section { position: relative; }
 @media (max-width: 980px) { .nameplate-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .nameplate-grid { grid-template-columns: 1fr; } }
 
-/* ---------- Interactive Crisis Game Game Styling ---------- */
+/* ---------- Interactive Game Layout ---------- */
 .game-card { background: var(--white); border: 1px solid var(--parchment-3); padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; max-width: 800px; margin: 0 auto; }
 .game-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent); }
 .game-options { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
@@ -648,7 +648,7 @@ section { position: relative; }
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   
-  // --- 1. SPA ROUTER SYSTEM ---
+  // --- 1. ROUTER SYSTEM ---
   const navLinks = document.querySelectorAll('[data-nav]');
   const pages = document.querySelectorAll('.page');
 
@@ -660,7 +660,6 @@ document.addEventListener('DOMContentLoaded', () => {
       activePage.classList.add('active');
     }
 
-    // Update active state in nav elements
     document.querySelectorAll('.nav-links a').forEach(link => {
       if (link.getAttribute('data-nav') === targetPageId) {
         link.classList.add('active');
@@ -669,19 +668,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Reset mobile menu on navigation
     document.querySelector('.nav-links').classList.remove('open');
     document.querySelector('.nav-toggle').classList.remove('open');
 
-    // Scroll cleanly to header
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Trigger counters if turning to home
     if (targetPageId === 'home') {
       setTimeout(runCounters, 100);
     }
     
-    // Trigger structural scroll animations
     handleScrollReveal();
   }
 
@@ -693,7 +688,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 2. MOBILE NAVIGATION DRAWER ---
+  // --- 2. MOBILE TOGGLE DRAW ---
   const navToggle = document.querySelector('.nav-toggle');
   const navMenu = document.querySelector('.nav-links');
 
@@ -704,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 3. NUMERICAL HERO STATS COUNTER ANIMATION ---
+  // --- 3. NUMERICAL COUNTER ---
   function runCounters() {
     const counters = document.querySelectorAll('.num');
     counters.forEach(counter => {
@@ -730,7 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   runCounters();
 
-  // --- 4. SCROLL VISIBILITY REVEAL ENGINE ---
+  // --- 4. SCROLL ANIMATION ---
   const revealElements = document.querySelectorAll('.reveal');
   function handleScrollReveal() {
     revealElements.forEach(el => {
@@ -742,9 +737,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   window.addEventListener('scroll', handleScrollReveal);
-  handleScrollReveal(); // Run once initially
+  handleScrollReveal();
 
-  // --- 5. INTERACTIVE SIMULATION GAME ENGINE ---
+  // --- 5. INTERACTIVE SIMULATION GAME ---
   const gameData = [
     {
       title: "Scenario 1: The Border Flashpoint",
@@ -801,12 +796,11 @@ document.addEventListener('DOMContentLoaded', () => {
         choicesContainer.appendChild(btn);
       });
     } else {
-      // Game end state
       stageTitle.textContent = "Simulation Concluded";
-      let performanceEval = "Outstanding Diplomat. You are fully prepared to lead delegations at international forums.";
+      let performanceEval = "Outstanding Diplomat! You are fully prepared to lead delegations at international forums.";
       if (totalScore < 20) performanceEval = "Capable Delegate. With focused training on rules of procedure, your floor leverage will grow.";
       
-      stageDesc.textContent = `Thank you for processing through the TISPCMUN Crisis Simulator. Total Diplomatic Capability Score: ${totalScore} / 30. ${performanceEval}`;
+      stageDesc.textContent = `Thank you for taking part in the TISPCMUN Crisis Simulator. Total Diplomatic Capability Score: ${totalScore} / 30. ${performanceEval}`;
       nextBtn.textContent = "Restart Simulator";
     }
   }
@@ -815,7 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
     totalScore += choice.score;
     feedbackText.textContent = choice.feedback;
     feedbackBox.style.display = 'block';
-    choicesContainer.innerHTML = ''; // Lock selections
+    choicesContainer.innerHTML = ''; 
   }
 
   nextBtn.addEventListener('click', () => {
@@ -829,7 +823,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGameStage();
   });
 
-  // Run game initial rendering pass
   renderGameStage();
 });
 </script>
